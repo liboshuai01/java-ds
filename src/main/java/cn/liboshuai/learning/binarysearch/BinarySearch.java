@@ -19,13 +19,13 @@ public class BinarySearch {
         int i = 0;
         int j = a.length - 1;
         while (i <= j) {
-            int middle = i + (j - i) / 2;
-            if (target < a[middle]) {
-                j = middle - 1;
-            } else if (target > a[middle]) {
-                i = middle + 1;
+            int m = i + (j - i) / 2;
+            if (target < a[m]) {
+                j = m - 1;
+            } else if (target > a[m]) {
+                i = m + 1;
             } else {
-                return middle;
+                return m;
             }
         }
         return -1;
@@ -45,13 +45,13 @@ public class BinarySearch {
         int i = 0;
         int j = a.length;
         while (i < j) {
-            int middle = i + (j - i) / 2;
-            if (target < a[middle]) {
-                j = middle;
-            } else if (target > a[middle]) {
-                i = middle + 1;
+            int m = i + (j - i) / 2;
+            if (target < a[m]) {
+                j = m;
+            } else if (target > a[m]) {
+                i = m + 1;
             } else {
-                return middle;
+                return m;
             }
         }
         return -1;
