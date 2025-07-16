@@ -71,4 +71,26 @@ public class BinarySearch {
         }
         return -1;
     }
+
+    /**
+     * 使用二分查找算法在一个有序数组中寻找特定目标值的索引.
+     * 该方法适用于已经按升序排列的数组，利用二分法减少查找次数，提高查找效率.
+     *
+     * @param a 已经按升序排列的整数数组.
+     * @param target 要在数组中查找的目标值.
+     * @return 目标值在数组中的索引；如果目标值不在数组中，则返回-1.
+     */
+    public static int binarySearchBalance(int[] a, int target) {
+        int i = 0;
+        int j = a.length;
+        while (1 < j - i) {
+            int m = i + (j - i) / 2;
+            if (target < a[m]) {
+                j = m;
+            }  else {
+                i = m;
+            }
+        }
+        return a[i] == target ? i : -1;
+    }
 }
