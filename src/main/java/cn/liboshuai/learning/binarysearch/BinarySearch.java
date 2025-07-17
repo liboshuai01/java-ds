@@ -101,6 +101,22 @@ public class BinarySearch {
         return c; // 最后剩余查找数组的元素为0了，表示没有数据都被查找过了，就可以返回最后一次得到的c值了。
     }
 
+    public static int binarySearchLeftmost2(int[] a, int target) {
+        int i = 0; // i表示剩余查找的数组开始索引
+        int j = a.length - 1; // j表示剩余查看数组的结束索引，[i,j]注意是左闭右闭。
+        while (i <= j) { // 判断剩余查找的数组中元素个数是否至少为1
+            int m = (i + j) >>> 1; // 求中间索引m
+            if (target <= a[m]) { // 如果目标值小于等于中间索引处的值
+                j = m - 1; // 则表示可以已经出现符合目的元素，但是因为我们要找的是最左边符合目标值的元素，所以现在还需要继续往左边查找。
+                // m处右边的元素无论是否存在目标元素，都不需要了，所以新的剩余数组结束索引为m-1，那么j = m -1;
+                // 当i=j时，如何代码能执行到此处，表示
+            } else { // target > a[m]，如果目标值大于中间索引处的值
+                i = m + 1; // 则表示m处及m左边的所有元素都小于目标值，可以直接被抛弃。现在新的目标开始索引为m+1，所以i = m +1;
+            }
+        }
+        return i;
+    }
+
     /**
      * 二分查找 查询最右边符合要求的元素下标
      */
@@ -120,6 +136,20 @@ public class BinarySearch {
             }
         }
         return c; // 最后剩余查找数组的元素为0了，表示没有数据都被查找过了，就可以返回最后一次得到的c值了。
+    }
+
+    public static int binarySearchRightmost2(int[] a, int target) {
+        int i = 0;
+        int j = a.length - 1;
+        while (i <= j) {
+            int m = (i + j) >>> 1;
+            if (target >= a[m]) {
+                i = m + 1;
+            } else {
+                j = m - 1;
+            }
+        }
+        return i;
     }
 
 }
