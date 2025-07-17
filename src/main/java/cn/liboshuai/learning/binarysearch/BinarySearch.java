@@ -19,31 +19,19 @@ public class BinarySearch {
      * 3. 如何确定时间复杂度和空间复杂度
      */
     public static int binarySearchBasic(int[] a, int target) {
-        int i = 0;
-        int j = a.length - 1;
-        while (i <= j) { // logn + 1
-            int m = i + (j - i) / 2; // logn
-            if (target < a[m]) { // logn
-                j = m - 1;
-            } else if (target > a[m]) { // logn
-                i = m + 1;
-            } else {
-                return m; // 1
+        int i = 0; // i表示剩余查找的数组开始索引
+        int j = a.length - 1; // j表示剩余查看数组的结束索引，[i,j]注意是左闭右闭。
+        while (i <= j) { // 判断剩余查找的数组中元素个数是否至少为1
+            int m = i + (j - i) / 2; // 求中间索引m
+            if (target < a[m]) { // 如果目标值小于中间索引处的值
+                j = m - 1; // 则表示m处及m右边的所有元素都大于目标值，都可以直接被抛弃。现在将剩余查找数组的结束索引改为m-1，所以j = m-1
+            } else if (target > a[m]) { // 如果目标值大于中间索引处的值
+                i = m + 1; // 则表示m处及m左边的所有元素都小于目标值，可以直接被抛弃。现在将剩余查找数组的开始索引改为m+1，所以i = m+1
+            } else { // target == a[m] 正好中间索引m的值等于目标，我们直接返回中间m索引即可。
+                return m; // 此时m就是我们要寻求的目标索引
             }
         }
-        return -1; // 1
-    }
-    // 最终时间复杂度：4logn + 3
-
-    public static void main(String[] args) {
-        int i = 0;
-        int j = Integer.MAX_VALUE - 1;
-        int m = (i + j) / 2;
-        System.out.printf("第一次求m: %d%n", m);
-        // 假设 target > m，也就是目标值在中间值的右边，我们需要将i更新为m，将求值范围缩小到为右边的这一半
-        i = m;
-        m = (i + j) / 2;
-        System.out.printf("第二次求m: %d%n", m);
+        return -1; // 代码可以执行到此处，表示剩余查找的数字元素个数已经小于1了，也就是没有元素符合要求了，表示整个数组里面就没有等于目标元素的数字，我们返回-1即可。
     }
 
     /**
@@ -58,15 +46,15 @@ public class BinarySearch {
      * 1. 当 j = a.length时，下面的循环条件如何更改，j值如何更改
      */
     public static int binarySearchImproved(int[] a, int target) {
-        int i = 0;
-        int j = a.length;
-        while (i < j) {
-            int m = i + (j - i) / 2;
-            if (target < a[m]) {
-                j = m;
-            } else if (target > a[m]) {
-                i = m + 1;
-            } else {
+        int i = 0; // i表示剩余查找的数组开始索引
+        int j = a.length; // j表示剩余查看数组的结束索引+1，[i,j)注意是左闭右开。
+        while (i < j) { // 因为j表示的数组最后一个元素+1的位置，之前时i<=j，i=j时表示只剩下一个元素了，现在就要改成i<j表示只剩下一个元素了
+            int m = i + (j - i) / 2; // 求中间索引下标
+            if (target < a[m]) { // 如果目标值小于中间索引处的值
+                j = m; // 则表示m处及m右边的所有元素都大于目标值，可以直接被抛弃。现在将剩余查找数组的结束索引改为m-1，所以j = m - 1 + 1 = m;
+            } else if (target > a[m]) { // 如果目标值大于中间索引处的值
+                i = m + 1; // 则表示m处及m左边的所有元素都小于目标值，可以直接被抛弃
+            } else { // target == a[m]，正好中间索引处的值等于目标值，我们直接返回中间索引即可。
                 return m;
             }
         }
@@ -79,17 +67,59 @@ public class BinarySearch {
      * 使得无论什么情况，比较次数都是logn
      */
     public static int binarySearchBalance(int[] a, int target) {
-        int i = 0;
-        int j = a.length;
-        while (1 < j - i) { // 要求数组内元素个数必须大于1
+        int i = 0; // i表示剩余查找的数组开始索引
+        int j = a.length; // j表示剩余查看数组的结束索引+1，[i,j)注意是左闭右开。
+        while (1 < j - i) { // 要求数组内元素个数必须大于1，也就是至少还要2个元素
             int m = i + (j - i) / 2; // 求中间索引下标
-            if (target < a[m]) { // 判断 目标值是否小于中间索引处的值
-                j = m;
-            } else { // target >= a[m]
-                i = m;
+            if (target < a[m]) { // 如果目标值小于中间索引处的值
+                j = m; // 则表示m处及m右边的所有元素都大于目标值，可以直接被抛弃。因为这里j的定义为剩余查看数组的结束索引+1，所以这里不能设置j = m -1，是 m -1 +1 = m.
+            } else { // target >= a[m]，如果目标值大于等于中间索引处的值，注意这里包含了等于
+                i = m; // 则表示m左边的所有元素都小于目标值，可以直接被抛弃。主要因为包含了等于，所以m不能被排除掉，所以这里设置为i = m，而不是之前的i =m +1;
             }
         }
-        return a[i] == target ? i : -1; // 如果数组内元素个数等于1了，直接执行此处
+        return a[i] == target ? i : -1; // 如果数组内元素只有一个1了，就判断最后这个元素是否等于目标值，如果等于，则返回这个索引，否则返回-1。
+    }
+
+    /**
+     * 二分查找 查询最左边符合要求的元素下标
+     */
+    public static int binarySearchLeftmost(int[] a, int target) {
+        int i =0; // i表示剩余查找的数组开始索引
+        int j = a.length -1; // j表示剩余查看数组的结束索引，[i,j]注意是左闭右闭。
+        int c = -1; // c表示最左边符合目标元素的下标值，初始化为-1，表示没有找到
+        while (i <= j) { // 判断剩余查找的数组中元素个数是否至少为1
+            int m = i + (j - i) / 2; // 求中间索引m
+            if (target < a[m]) { // 如果目标值小于中间索引处的值
+                j = m - 1; // 则表示m处及m右边的所有元素都大于目标值，可以直接被抛弃。现在新的目标结束索引因为为m-1，所以j = m -1;
+            } else if (target > a[m]) { // 如果目标值大于中间索引处的值
+                i = m + 1; // 则表示m处及m左边的所有元素都小于目标值，可以直接被抛弃。现在新的目标开始索引因为为m+1，所以i = m +1;
+            } else { // target == a[m] 如果中间索引m的值等于目标
+                c = m; // 则先将符合目标元素的下标保存起来，并继续向左查找，直到找到最左边的符合目标元素的下标。
+                j = m - 1; // 因为我们是要查询最左边的符合目标元素的下标，所以m以及m右边的元素都可以被抛弃了，现在剩余查找数组的结束索引为m-1，所以j = m -1;
+            }
+        }
+        return c; // 最后剩余查找数组的元素为0了，表示没有数据都被查找过了，就可以返回最后一次得到的c值了。
+    }
+
+    /**
+     * 二分查找 查询最右边符合要求的元素下标
+     */
+    public static int binarySearchRightmost(int[] a, int target) {
+        int i =0; // i表示剩余查找的数组开始索引
+        int j = a.length -1; // j表示剩余查看数组的结束索引，[i,j]注意是左闭右闭。
+        int c = -1; // c表示最左边符合目标元素的下标值，初始化为-1，表示没有找到
+        while (i <= j) { // 判断剩余查找的数组中元素个数是否至少为1
+            int m = i + (j - i) / 2; // 求中间索引m
+            if (target < a[m]) { // 如果目标值小于中间索引处的值
+                j = m - 1; // 则表示m处及m右边的所有元素都大于目标值，可以直接被抛弃。现在新的目标结束索引因为为m-1，所以j = m -1;
+            } else if (target > a[m]) { // 如果目标值大于中间索引处的值
+                i = m + 1; // 则表示m处及m左边的所有元素都小于目标值，可以直接被抛弃。现在新的目标开始索引因为为m+1，所以i = m +1;
+            } else { // target == a[m] 如果中间索引m的值等于目标
+                c = m; // 则先将符合目标元素的下标保存起来，并继续向右查找，直到找到最右边的符合目标元素的下标。
+                i = m + 1; // 因为我们是要查询最右边的符合目标元素的下标，所以m以及m左边的元素都可以被抛弃了，现在剩余查找数组的开始索引为m+1，所以i = m -1;
+            }
+        }
+        return c; // 最后剩余查找数组的元素为0了，表示没有数据都被查找过了，就可以返回最后一次得到的c值了。
     }
 
 }
