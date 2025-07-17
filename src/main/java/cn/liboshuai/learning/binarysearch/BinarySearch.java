@@ -21,18 +21,19 @@ public class BinarySearch {
     public static int binarySearchBasic(int[] a, int target) {
         int i = 0;
         int j = a.length - 1;
-        while (i <= j) {
-            int m = i + (j - i) / 2;
-            if (target < a[m]) {
+        while (i <= j) { // logn + 1
+            int m = i + (j - i) / 2; // logn
+            if (target < a[m]) { // logn
                 j = m - 1;
-            } else if (target > a[m]) {
+            } else if (target > a[m]) { // logn
                 i = m + 1;
             } else {
-                return m;
+                return m; // 1
             }
         }
-        return -1;
+        return -1; // 1
     }
+    // 最终时间复杂度：4logn + 3
 
     public static void main(String[] args) {
         int i = 0;
@@ -73,24 +74,22 @@ public class BinarySearch {
     }
 
     /**
-     * 使用二分查找算法在一个有序数组中寻找特定目标值的索引.
-     * 该方法适用于已经按升序排列的数组，利用二分法减少查找次数，提高查找效率.
-     *
-     * @param a 已经按升序排列的整数数组.
-     * @param target 要在数组中查找的目标值.
-     * @return 目标值在数组中的索引；如果目标值不在数组中，则返回-1.
+     * 二分查找 平衡版本
+     * 解决了在右边找不到的最差情况的效率问题
+     * 使得无论什么情况，比较次数都是logn
      */
     public static int binarySearchBalance(int[] a, int target) {
         int i = 0;
         int j = a.length;
-        while (1 < j - i) {
-            int m = i + (j - i) / 2;
-            if (target < a[m]) {
+        while (1 < j - i) { // 要求数组内元素个数必须大于1
+            int m = i + (j - i) / 2; // 求中间索引下标
+            if (target < a[m]) { // 判断 目标值是否小于中间索引处的值
                 j = m;
-            }  else {
+            } else { // target >= a[m]
                 i = m;
             }
         }
-        return a[i] == target ? i : -1;
+        return a[i] == target ? i : -1; // 如果数组内元素个数等于1了，直接执行此处
     }
+
 }
