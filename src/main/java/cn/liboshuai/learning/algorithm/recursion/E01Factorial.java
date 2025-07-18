@@ -1,5 +1,8 @@
 package cn.liboshuai.learning.algorithm.recursion;
 
+/**
+ * 正/倒序打印数字
+ */
 public class E01Factorial {
     public static void main(String[] args) {
         f(5);
