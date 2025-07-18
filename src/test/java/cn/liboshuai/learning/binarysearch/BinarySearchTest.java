@@ -1,5 +1,6 @@
 package cn.liboshuai.learning.binarysearch;
 
+import cn.liboshuai.learning.algorithm.binarysearch.BinarySearch;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,4 @@
-package cn.liboshuai.learning.binarysearch;
+package cn.liboshuai.learning.algorithm.binarysearch;
 
 public class BinarySearch {
 
